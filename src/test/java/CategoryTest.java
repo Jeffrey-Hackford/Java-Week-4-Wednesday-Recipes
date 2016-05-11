@@ -33,4 +33,23 @@ public class CategoryTest {
     assertTrue(Category.all().get(0).equals(newCategory));
   }
 
+  @Test
+  public void save_assignsIdToObject() {
+    Category newCategory = new Category("American");
+    newCategory.save();
+    Category savedCategory = Category.all().get(0);
+    assertEquals(newCategory.getId(), savedCategory.getId());
+  }
+
+  @Test
+  public void addRecipe_addsRecipeInstanceOfCategory() {
+    Category myCategory = new Category("Thai");
+    myCategory.save();
+    Recipe myRecipe = new Recipe("Recipe 1");
+    myRecipe.save();
+    myCategory.addRecipe(myRecipe);
+    Recipe savedRecipe = myCategory.getRecipes().get(0);
+    assertTrue(myRecipe.equals(savedRecipe));
+  }
+
 }
