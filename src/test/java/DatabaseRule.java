@@ -17,7 +17,6 @@ public class DatabaseRule extends ExternalResource {
       con.createQuery(deleteRecipesQuery).executeUpdate();
       con.createQuery(deleteCategoriesQuery).executeUpdate();
       con.createQuery(deleteCategories_RecipesQuery).executeUpdate();
-
     }
   }
 }

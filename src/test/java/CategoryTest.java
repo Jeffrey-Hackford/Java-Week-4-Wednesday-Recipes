@@ -5,8 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CategoryTest {
+
   @Rule
   public DatabaseRule database = new DatabaseRule();
+
+
 
   @Test
   public void Category_instantiatesCorrectly_True() {
@@ -41,15 +44,27 @@ public class CategoryTest {
     assertEquals(newCategory.getId(), savedCategory.getId());
   }
 
+
   @Test
   public void addRecipe_addsRecipeInstanceOfCategory() {
     Category myCategory = new Category("Thai");
     myCategory.save();
-    Recipe myRecipe = new Recipe("Recipe 1");
+    Recipe myRecipe = new Recipe("Recipe 1", "ingredients", "instructions", 5);
     myRecipe.save();
     myCategory.addRecipe(myRecipe);
     Recipe savedRecipe = myCategory.getRecipes().get(0);
+    System.out.println("saved recipe name" + savedRecipe.getIngredients());
     assertTrue(myRecipe.equals(savedRecipe));
   }
 
+  @Test
+  public void getCategories_returnsAllCategories_List() {
+    Category myCategory = new Category("Mexican");
+    myCategory.save();
+    Recipe myRecipe = new Recipe("Recipe 1", "ingredients", "instructions", 5);
+    myRecipe.save();
+    myRecipe.addCategory(myCategory);
+    List savedCategories = myRecipe.getCategories();
+    assertEquals(1, savedCategories.size());
+  }
 }

@@ -1,13 +1,14 @@
-<h2 class="jumbotron">Add a Recipe</h2>
+<h2 class="jumbotron">Recipe Book!</h2>
 <div class="">
   <p>
-    Enter a new recipe:
+    Enter a new recipe to add to the book:
   </p>
   <form action="/recipelist" method="post">
     <input type="text" name="recipeName" id="recipeName" placeholder="Recipe Name">
-    <textarea rows="5" cols="50" type="text" name="review" id="review" placeholder="Ingredients:"></textarea>
+    <textarea rows="5" cols="50" type="text" name="recipeIngredients" id="recipeIngredients" placeholder="Ingredients:"></textarea>
     <br>
-    <textarea rows="5" cols="50" type="text" name="review" id="review" placeholder="instructions:"></textarea>
+    <textarea rows="5" cols="50" type="text" name="recipeInstructions" id="recipeInstructions" placeholder="instructions:"></textarea>
+    <input type="number" name="recipeRating" id="recipeRating">
     <br>
     <button class="btn btn-success" type="submit">+</button>
   </form>

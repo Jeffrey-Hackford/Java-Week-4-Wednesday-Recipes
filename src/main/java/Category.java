@@ -55,12 +55,11 @@ public class Category {
     }
   }
 
-
     public void update(String newCategory) {
       try(Connection con = DB.sql2o.open()) {
         String sql = "UPDATE categories SET type = :type WHERE id = :id";
         con.createQuery(sql)
-          .addParameter("type", newDescription)
+          .addParameter("type", type)
           .addParameter("id", this.id)
           .executeUpdate();
       }
@@ -79,8 +78,6 @@ public class Category {
             .executeUpdate();
       }
     }
-
-
 
   public void addRecipe(Recipe recipe) {
     try(Connection con = DB.sql2o.open()) {

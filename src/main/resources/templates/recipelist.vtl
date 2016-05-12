@@ -1,6 +1,9 @@
-<h1>Here is a list of your Recipes</h1>
+<br><h1>Here is a list of your Recipes</h1><br><hr><br>
 
-<div>
-  #foreach($recipe in $recipes)
-    <li><a href="">recipe.getName()</li>
+<div class="row">
+  <div class="col-xs-3 col-xs-offset-1">
+    #foreach($recipe in $recipes)
+      <li class="jumbotron"><a href="/recipe/:id"><Strong>$newRecipe.getName()</Strong></li><br>
+    #end
+  </div>
 </div>

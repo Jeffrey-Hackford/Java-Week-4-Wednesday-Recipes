@@ -3,15 +3,17 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Recipe {
-  private String name;
   private int id;
+  private int rating;
+  private String name;
   private String ingredients;
   private String instructions;
 
-  public Recipe(String name, String ingredients, String instructions) {
-    this.ingredients = ingredients;
+  public Recipe(String name, String ingredients, String instructions, Integer rating) {
     this.name = name;
+    this.ingredients = ingredients;
     this.instructions = instructions;
+    this.rating = rating;
   }
 
   public String getName() {
@@ -30,6 +32,10 @@ public class Recipe {
     return id;
   }
 
+  public int getRating() {
+    return rating;
+  }
+
   public static List<Recipe> all() {
     String sql = "SELECT * FROM recipes";
     try(Connection con = DB.sql2o.open()) {
@@ -39,32 +45,42 @@ public class Recipe {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO recipes (ingredients, instructions) VALUES (:ingredients, :instructions)";
+      String sql = "INSERT INTO recipes (name, ingredients, instructions, rating) VALUES (:name, :ingredients, :instructions, :rating)";
       this.id = (int) con.createQuery(sql, true)
+      .addParameter("name", this.name)
       .addParameter("ingredients", this.ingredients)
       .addParameter("instructions", this.instructions)
+      .addParameter("rating", this.rating)
       .executeUpdate()
       .getKey();
     }
   }
 
-  public static Recipe find(int id) {
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM recipes WHERE ingredients=:ingredients AND instructions=:instructions";
-      Recipe recipe = con.createQuery(sql)
-      .addParameter("ingredients", ingredients)
-      .addParameter("instructions", instructions)
-      .executeAndFetchFirst(Recipe.class);
-      return recipe;
+  @Override
+  public boolean equals(Object passedInRecipe) {
+    if(!(passedInRecipe instanceof Recipe)) {
+      return false;
+    } else {
+      Recipe newRecipe = (Recipe) passedInRecipe;
+      return this.getName().equals(newRecipe.getName());
     }
   }
 
-  public void addCategory() {
+  public static Recipe find(int id) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO categories_recipes (category_id, recipes_id) VALUES (:category_id, :recipe_id)";
-      con.creatQuery(sql)
-      .addParameter("category_id", category.getId())
+      String sql = "SELECT * FROM recipes WHERE id=:id";
+      return con.createQuery(sql)
+      .addParameter("id", id)
+      .executeAndFetchFirst(Recipe.class);
+    }
+  }
+
+  public void addCategory(Category category) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO categories_recipes (category_id, recipe_id) VALUES (:category_id, :recipe_id)";
+      con.createQuery(sql)
       .addParameter("recipe_id", this.getId())
+      .addParameter("category_id", category.getId())
       .executeUpdate();
     }
   }
